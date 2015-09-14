@@ -31,6 +31,10 @@ Restart your computer.
 
 Node should now be installed! In the next step we will test it and install the CLI.
 
+### Install the 2013 Microsoft Build Tools
+
+Grab the 2013 Microsoft Build Tools from [Microsoft's Download Center](http://www.microsoft.com/en-us/download/details.aspx?id=40760) and install the 2013 Microsoft Build Tools
+
 ### Installing the Particle Driver
 You'll also need to install the Windows driver. [Download it here.](https://s3.amazonaws.com/spark-website/Particle.zip)
 
@@ -59,7 +63,7 @@ Now your Command Prompt, is open for use.
 
 ### Installing the Particle CLI
 In the Command Prompt window, type:
-`npm install -g particle-cli`
+`npm install -g particle-cli --msvs_version=2013`
 
 and press enter.
 
