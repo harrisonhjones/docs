@@ -67,7 +67,7 @@ Note that, if you enter this mode by holding `SETUP` on boot, flashing magenta i
 
 {{{device-animation device "blink" "lime" }}}
 
-If your {{device}} is flashing green, it is trying to connect to the internet. If you already entered your Wi-Fi credentials, give your device a few seconds to connect and start breathing cyan.
+If your {{device}} is flashing green, it is trying to connect to the internet. If you already {{#if electron}}activated your SIM card, give your device a few minutes to connect and start breathing cyan{{/if}}{{#if core or photon}}entered your Wi-Fi credentials, give your device a few seconds to connect and start breathing cyan.{{/if}}
 
 {{#if photon}}
 If you haven't yet connected your {{device}} to Wi-Fi, then set your device to [Listening Mode](#photon-modes-listening-mode).
@@ -84,18 +84,17 @@ If you haven't yet connected your {{device}} to Wi-Fi, then set your device to [
 {{{device-animation device "blink" "cyan" }}}
 
 When the {{device}} is in the process of connecting to the cloud, it will rapidly flash cyan. You often see this mode when you first connect your {{device}} to a network, after it has just flashed green.
-
 {{/if}}
 
-### Wi-Fi Off
+### {{#if photon or core}}Wi-Fi Off{{/if}}{{#if electron}}Cell Service Off{{/if}}
 
 {{{device-animation device "breathe" "white" }}}
 
-If your {{device}} is breathing white, the Wi-Fi module is off. You might see this mode if:
+If your {{device}} is breathing white, the {{#if photon or core}}Wi-Fi Module{{/if}}{{#if electron}}Cell Service{{/if}} is off. You might see this mode if:
 
 - You have set your module to `MANUAL` or `SEMI_AUTOMATIC` in your user firmware
-- You have called `WiFi.off()` in your user firmware
-
+{{#if core}}- The WiFi module (CC3000) is damaged{{/if}}
+{{#if photon or core}}- You have called `WiFi.off()` in your user firmware{{/if}}
 
 ### Listening Mode
 
@@ -120,7 +119,7 @@ To put your {{device}} in Listening Mode, hold the `MODE` button for three secon
 {{/if}}
 
 
-### Wi-Fi Network Reset
+{{#if photon or core}}### Wi-Fi Network Reset
 
 {{#if photon}}
 
@@ -138,6 +137,7 @@ You can also reset the Wi-Fi networks by holding the `SETUP` button and tapping 
 
 To erase the stored wifi networks on your {{device}}, hold the `MODE` button for about ten seconds, until the RGB LED flashes blue rapidly.
 
+{{/if}}
 {{/if}}
 
 {{#if photon}}
@@ -175,7 +175,7 @@ And a usage guide [here.](/reference/cli/)
 
 To enter DFU Mode:
 
-{{#if photon}}
+{{#if photon or electron}}
 
 1. Hold down BOTH buttons
 2. Release only the RESET button, while holding down the SETUP button.
@@ -203,27 +203,24 @@ The {{device}} now is in the DFU mode.
 
 ### Firmware Reset
 
-Firmware reset is not available on the Photon/P1, but not to worry! If you are experiencing problems with your application firmware, you can use [Safe Mode](#safe-mode) to recover.
-
+{{#if photon or electron}}
+Firmware reset is not available on {{device}}, but not to worry! If you are experiencing problems with your application firmware, you can use [Safe Mode](#safe-mode) to recover.
+{{/if}}
+{{#if core}}
+Firmware reset is not available on {{device}}, but not to worry! If you are experiencing problems with your application firmware, you can use a Factory Reset (below) to recover.
 {{/if}}
 
 ### Factory Reset
 
-{{#if photon}}
+{{#if photon or electron}}Factory reset is not available on the {{device}}, but not to worry! If you are experiencing problems with your application firmware, you can use [Safe Mode](#safe-mode) to recover.{{/if}}
 
-Factory reset is not available on the Photon/P1, but not to worry! If you are experiencing problems with your application firmware, you can use [Safe Mode](#safe-mode) to recover.
-
-{{/if}}
-
-{{#if core}}
-
-{{{vine "https://vine.co/v/eZU6XdrYbd5/embed/simple"}}}
+{{#if core}}{{{vine "https://vine.co/v/eZU6XdrYbd5/embed/simple"}}}
 
 A factory reset restores the firmware on the {{device}} to the default Tinker app and clears all your Wi-Fi credentials.
 
 Procedure:
 
-The procedure is same as the one described above (DFU Mode), but in this case you should continue holding down the MODE button until you see the {{device}} change from flashing yellow to flashing white. Then release the button.  The {{device}} should begin after the factory reset is complete.
+The procedure is same as the one described above (DFU Mode), but in this case you should continue holding down the MODE button until you see the {{device}} change from flashing yellow to flashing white. Then release the button. The {{device}} should begin after the factory reset is complete.
 
 1. Hold down BOTH buttons
 2. Release only the RST button, while holding down the MODE button.
@@ -232,43 +229,38 @@ The procedure is same as the one described above (DFU Mode), but in this case yo
 5. Finally, the LED will turn blink white rapidly
 6. Release the MODE button
 
-{{/if}}
-
-You can reset Wi-Fi credentials by performing a [WiFi Network Reset](#wifi-network-reset).
+You can reset Wi-Fi credentials by performing a [WiFi Network Reset](#wifi-network-reset).{{/if}}
 
 ## Troubleshooting Modes
 
 These modes let you know about more atypical issues your {{device}} might be exhibiting. Use this section to troubleshoot strange colors you might see from your {{device}}.
 
-
-### Wi-Fi Module Not Connected
+### {{#if core or photon}}Wi-Fi Module{{/if}}{{#if electron}}Cell Module{{/if}} Not Connected
 
 {{{device-animation device "breathe" "blue" }}}
 
-If the Wi-Fi module is on but not connected to a network, your {{device}} will breathe blue. Note that this will be dark blue and not cyan.
-
+If the {{#if core or photon}}Wi-Fi Module{{/if}}{{#if electron}}Cell Module{{/if}} is on but not connected to a network, your {{device}} will breathe blue. Note that this will be dark blue and not cyan.
 
 ### Cloud Not Connected
 
 {{{device-animation device "breathe" "lime" }}}
 
-When the {{device}} is connected to a Wi-Fi network but not to the cloud, it will breathe green.
-
+When the {{device}} is connected to a {{#if core or photon}}Wi-Fi Network{{/if}}{{#if electron}}Cellular Network{{/if}} but not to the cloud, it will breathe green.
 
 ### Bad Public Key
 
-When the server public key is bad, the {{device}} will flash alternately cyan and red.
+When the server public key is bad, the {{device}} will flash alternately cyan and red. Reach out to support for help with this mode. 
 
+#### Red Flash Basic Errors
 
-### Red Flash Basic Errors
-
-Flashing red indicates various errors.
+Flashing cyan then red indicates various errors.
 
 - 2 red flashes: Could not reach the internet.
 - 3 red flashes: Connected to the internet, but could not reach the Particle Cloud.
-- Flashing "orange": This sometimes is misdiagnosed as yellow or red and indicates bad device keys.
 
+### Bad Device Key
 
+When the server public key is bad, the {{device}} will flash alternately cyan and red/orange/yellow. Reach out to support for help with this mode. 
 
 ### Red Flash SOS
 
